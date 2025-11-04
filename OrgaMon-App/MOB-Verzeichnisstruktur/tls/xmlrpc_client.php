@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
   |      ___                  __  __
   |     / _ \ _ __ __ _  __ _|  \/  | ___  _ __
@@ -197,9 +197,10 @@ class txmlrpc {
     }
 
     static public function decodeResponse($xml) {
-        $xml = DOMDocument::loadXML(utf8_encode($xml));
+        $doc = new DOMDocument();
+        $doc->loadXML(utf8_encode($xml));
         try {
-            $xp = new DOMXPath($xml);
+            $xp = new DOMXPath($doc);
             $xml_vars = $xp->query("//params/param/value/child::*");
             switch ($xml_vars->length) {
                 case(0): {
