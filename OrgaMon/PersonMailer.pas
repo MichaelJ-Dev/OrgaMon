@@ -359,7 +359,7 @@ begin
     until true;
     CheckBox1.checked := true;
     CheckBox1.caption := 'Ich bin Server';
-    FormMain.Panel1.Color := cllime;
+    FormMain.PanelMail.Color := cllime;
     FormMain.DisableSaveOnExit;
 
   end;

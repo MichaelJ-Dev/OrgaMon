@@ -923,7 +923,7 @@ object FormMain: TFormMain
     TabOrder = 47
     OnClick = Button67Click
   end
-  object Panel1: TPanel
+  object PanelMail: TPanel
     Left = 78
     Top = 6
     Width = 75
@@ -1137,8 +1137,8 @@ object FormMain: TFormMain
     OnClick = Button26Click
   end
   object Button81: TButton
-    Left = 154
-    Top = 290
+    Left = 150
+    Top = 293
     Width = 74
     Height = 25
     Caption = 'Mobil'

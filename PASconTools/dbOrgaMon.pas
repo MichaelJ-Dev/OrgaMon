@@ -406,7 +406,7 @@ var
 begin
   ResultSQL := TStringList.create;
   ResultSQL.add('where RID in (');
-  for n := 0 to pred(min(l.count, 999)) do
+  for n := 0 to pred(min(l.count, 9999)) do
     if (n = 0) then
       ResultSQL.add(inttostr(integer(l[n])))
     else

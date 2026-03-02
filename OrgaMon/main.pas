@@ -102,7 +102,7 @@ type
     Button63: TButton;
     Button66: TButton;
     Button67: TButton;
-    Panel1: TPanel;
+    PanelMail: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
@@ -646,7 +646,7 @@ begin
 
     if IsParam('-ds') then
     begin
-      Panel1.color := clred;
+      PanelMail.color := clred;
       Panel2.color := clred;
       Panel3.color := clred;
       Panel4.color := clred;
@@ -658,7 +658,7 @@ begin
       Button54.Enabled := true;
     end else
     begin
-      SetServerStatus('-dm', Panel1, pDisableMailer);
+      SetServerStatus('-dm', PanelMail, pDisableMailer);
       SetServerStatus('-dx', Panel2, pDisableXMLRPC);
       SetServerStatus('-dt', Panel3, pDisableTagesabschluss);
       SetServerStatus('-dw', Panel4, pDisableTagwache);

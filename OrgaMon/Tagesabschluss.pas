@@ -126,6 +126,7 @@ begin
     Log(cERRORText + ' Tagesabschluss: Abbruch');
     EofTagesabschluss;
     Button1.caption := 'Abbruch ...';
+    EndHourGlass;
     application.processmessages;
   end
   else

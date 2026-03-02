@@ -441,6 +441,7 @@ object FormPersonMailer: TFormPersonMailer
     Height = 194
     CustomGlyphsSupplied = []
     DataSource = IB_DataSource1
+    ParentBackground = False
     TabOrder = 0
     DrawCellTextOptions = [gdtShowTextBlob]
   end
@@ -571,10 +572,6 @@ object FormPersonMailer: TFormPersonMailer
       Margins.Right = 2
       Margins.Bottom = 2
       Caption = 'Log'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -600,6 +597,7 @@ object FormPersonMailer: TFormPersonMailer
         DataField = 'NACHRICHT'
         DataSource = IB_DataSource1
         Align = alClient
+        ParentBackground = False
         TabOrder = 0
         AutoSize = False
       end
@@ -611,10 +609,6 @@ object FormPersonMailer: TFormPersonMailer
       Margins.Bottom = 2
       Caption = 'Test'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label6: TLabel
         Left = 35
         Top = 17
@@ -683,10 +677,6 @@ object FormPersonMailer: TFormPersonMailer
     object TabSheet4: TTabSheet
       Caption = 'Einstellungen'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label3: TLabel
         Left = 39
         Top = 43
@@ -747,7 +737,6 @@ object FormPersonMailer: TFormPersonMailer
   object IB_Query1: TIB_Query
     ColumnAttributes.Strings = (
       'RID=NOTREQUIRED')
-    DatabaseName = '192.168.115.6:test.fdb'
     IB_Connection = DataModuleDatenbank.IB_Connection1
     SQL.Strings = (
       'select '

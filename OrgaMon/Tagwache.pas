@@ -102,6 +102,7 @@ begin
     Log(cERRORText + ' Benutzer Abbruch');
     EofTagwache;
     Button1.caption := 'Abbruch ...';
+    EndHourGlass;
     application.processmessages;
   end
   else
