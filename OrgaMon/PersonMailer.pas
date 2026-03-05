@@ -916,7 +916,9 @@ begin
             begin
 
               // im 1. Rang: aus "EMail"
-              Versand_An := noblank(e_r_sqls('select EMAIL from PERSON where RID=' + inttostr(ZIEL_R)));
+              Versand_An := noblank(e_r_sqls('select EMAIL_2 from PERSON where RID=' + inttostr(ZIEL_R)));
+              if length(Versand_An)<=0 then
+                Versand_An := noblank(e_r_sqls('select EMAIL from PERSON where RID=' + inttostr(ZIEL_R)));
 
               // im 2. Rang: aus "USER-ID"
               if (Versand_An = '') then
@@ -1130,6 +1132,7 @@ var
   cANSCHRIFT: TIB_Cursor;
   cARTIKEL: TIB_Cursor;
   cVERSAND: TIB_Cursor;
+  cBELEG: TIB_Cursor;
   cEREIGNIS: TIB_Cursor;
   n: integer;
   eMail_Parameter: TStringList;
@@ -1343,6 +1346,18 @@ begin
               with Fields[n] do
                 ersetze('~VERSAND.' + FieldName + '~', AsString, sText);
           end;
+
+          cBELEG := DataModuleDatenbank.nCursor;
+          with cBELEG do
+          begin
+            sql.add('select * from BELEG where RID=' + inttostr(BELEG_R));
+            ApiFirst;
+            for n := 0 to pred(FieldCount) do
+              with Fields[n] do
+                ersetze('~BELEG.' + FieldName + '~', AsString, sText);
+          end;
+
+
           cVERSAND.free;
           if not(ReplacementsAhead) then
             break;

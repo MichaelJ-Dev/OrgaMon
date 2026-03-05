@@ -2187,6 +2187,7 @@ begin
   iGOT := sSystemSettings.values['GOT'] = cIni_Activate;
   iBelegAutoSetMengeNull := sSystemSettings.values['BelegSetzeMengeNullBeiPreisNull'] = cIni_Activate;
   iBelegArtikelNeu := sSystemSettings.values['BelegArtikelNeu'] = cIni_Activate;
+  iPDFCreatorTool := sSystemSettings.values['PDFCreatorTool'];
   iBruttoVersandGewicht := sSystemSettings.values['BruttoVersandGewicht'] = cIni_Activate;
   iRechnungGlattstellen := sSystemSettings.values['BelegRechnungGlattstellen'] = cIni_Activate;
   iUnterdrueckeGeliefertes := sSystemSettings.values['BelegUnterdrückeGeliefertes'] = cIni_Activate;

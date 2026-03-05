@@ -296,6 +296,8 @@ type
     Label60: TLabel;
     ComboBox2: TComboBox;
     SpeedButton22: TSpeedButton;
+    IB_EditEmail2: TIB_Edit;
+    Label61: TLabel;
     procedure Button7Click(Sender: TObject);
     procedure IB_Edit18Change(Sender: TObject);
     procedure Button8Click(Sender: TObject);

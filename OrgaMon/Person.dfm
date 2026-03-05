@@ -2107,6 +2107,7 @@ object FormPerson: TFormPerson
     object TabSheet5: TTabSheet
       Caption = 'Internet Dienste'
       ImageIndex = 4
+      ExplicitTop = 26
       object Label9: TLabel
         Left = 5
         Top = 9
@@ -2116,37 +2117,45 @@ object FormPerson: TFormPerson
         Caption = 'eMail;eMail;...'
       end
       object Label22: TLabel
-        Left = 322
+        Left = 485
         Top = 36
         Width = 132
         Height = 13
         Caption = 'Dienste und Parameter'
       end
       object Label25: TLabel
-        Left = 3
+        Left = 5
         Top = 38
         Width = 83
         Height = 13
         Caption = 'Benutzername'
       end
       object Label26: TLabel
-        Left = 35
-        Top = 61
+        Left = 5
+        Top = 90
         Width = 51
         Height = 13
         Caption = 'Passwort'
         Visible = False
       end
       object Label58: TLabel
-        Left = 4
-        Top = 86
+        Left = 386
+        Top = 64
         Width = 81
         Height = 13
         Caption = 'Firefox-iMacro'
         Visible = False
       end
+      object Label61: TLabel
+        Left = 5
+        Top = 63
+        Width = 36
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'eMail2'
+      end
       object IB_Edit9: TIB_Edit
-        Left = 89
+        Left = 91
         Top = 7
         Width = 905
         Height = 21
@@ -2156,8 +2165,8 @@ object FormPerson: TFormPerson
         TabOrder = 0
       end
       object IB_Edit22: TIB_Edit
-        Left = 89
-        Top = 58
+        Left = 91
+        Top = 86
         Width = 224
         Height = 21
         DataField = 'USER_PWD'
@@ -2167,7 +2176,7 @@ object FormPerson: TFormPerson
         TabOrder = 2
       end
       object IB_Edit23: TIB_Edit
-        Left = 89
+        Left = 91
         Top = 35
         Width = 224
         Height = 21
@@ -2177,8 +2186,8 @@ object FormPerson: TFormPerson
         TabOrder = 1
       end
       object IB_Memo2: TIB_Memo
-        Left = 457
-        Top = 33
+        Left = 620
+        Top = 34
         Width = 376
         Height = 67
         DataField = 'USER_DIENSTE'
@@ -2190,8 +2199,8 @@ object FormPerson: TFormPerson
       end
       object Button17: TButton
         Left = 319
-        Top = 58
-        Width = 130
+        Top = 87
+        Width = 111
         Height = 19
         Caption = 'Passwort zuteilen'
         TabOrder = 4
@@ -2199,8 +2208,8 @@ object FormPerson: TFormPerson
         OnClick = Button17Click
       end
       object ComboBox1: TComboBox
-        Left = 89
-        Top = 83
+        Left = 471
+        Top = 58
         Width = 145
         Height = 21
         Style = csDropDownList
@@ -2211,6 +2220,16 @@ object FormPerson: TFormPerson
         OnSelect = ComboBox1Select
         Items.Strings = (
           '')
+      end
+      object IB_EditEmail2: TIB_Edit
+        Left = 91
+        Top = 60
+        Width = 293
+        Height = 21
+        DataField = 'EMAIL_2'
+        DataSource = IB_DataSource1
+        ParentBackground = False
+        TabOrder = 6
       end
     end
     object TabSheet13: TTabSheet
@@ -3263,6 +3282,7 @@ object FormPerson: TFormPerson
       ',PRIV_FAX'
       ',GESCH_FAX'
       ',EMAIL'
+      ',EMAIL_2'
       ',WEBSITE'
       ',INTERESSE_R'
       ',KREDIT_R'

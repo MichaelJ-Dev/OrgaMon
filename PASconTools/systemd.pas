@@ -48,7 +48,7 @@ function RunExternalApp(Cmd: string; const CmdShow: Integer): boolean;
 procedure WakeOnLan(MAC: string); // sample: WakeOnLan('00-07-95-1C-64-7E');
 
 // Dokumente konvertieren
-function html2pdf(Dokument: string; OnlyIfOutDated: boolean = true): TStringList;
+function html2pdf({APDFToolPathFN:String; }Dokument: string; OnlyIfOutDated: boolean = true): TStringList;
 
 const
    SD_LISTEN_FDS_START = 3;
@@ -63,12 +63,14 @@ uses
  anfix, CareTakerClient,
  {$ifndef FPC}
  windows,
+ VCL.Forms,
  JclMiscel,
  {$else}
  fpchelper,
  {$endif}
  IdUDPClient,
- SysUtils;
+ SysUtils,
+ globals;
 
 function CallExternalApp(Cmd: string; const CmdShow: Integer): Cardinal;
 begin
@@ -111,6 +113,7 @@ end;
 
 const
  wkhtmltopdf_Installation: string = '';
+ lPDFCreatorTool: string = 'wkhtmltopdf.exe';
 
 function html2pdf(Dokument: string; OnlyIfOutDated: boolean = true): TStringList;
 const
@@ -122,7 +125,6 @@ var
  ErrorMsg: string;
 begin
 
-
   repeat
 
      result := TStringList.Create;
@@ -133,27 +135,35 @@ begin
        break;
      end;
 
+     if length(iPDFCreatorTool)>0 then
+       lPDFCreatorTool := iPDFCreatorTool;
+
      if (wkhtmltopdf_Installation='') then
      begin
 
       repeat
-       wkhtmltopdf_Installation := 'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe';
+       wkhtmltopdf_Installation := ExtractFilePath(application.exename) + iPDFCreatorTool;
        if FileExists(wkhtmltopdf_Installation) then
         break;
-       wkhtmltopdf_Installation := ProgramFilesDir + 'wkhtmltopdf\bin\wkhtmltopdf.exe';
+       wkhtmltopdf_Installation := 'C:\Program Files\wkhtmltopdf\bin\' + iPDFCreatorTool;
        if FileExists(wkhtmltopdf_Installation) then
         break;
-       wkhtmltopdf_Installation := 'C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe';
+       wkhtmltopdf_Installation := ProgramFilesDir + 'wkhtmltopdf\bin\' + iPDFCreatorTool;
        if FileExists(wkhtmltopdf_Installation) then
         break;
+       wkhtmltopdf_Installation := 'C:\Program Files (x86)\wkhtmltopdf\bin\' + iPDFCreatorTool;
+       if FileExists(wkhtmltopdf_Installation) then
+        break;
+
        wkhtmltopdf_Installation := '';
       until yet;
 
      end;
 
+
     if (wkhtmltopdf_Installation='') then
     begin
-      ErrorMsg := 'wkhtmltopdf Installation nicht gefunden!';
+      ErrorMsg := wkhtmltopdf_Installation  + ' nicht gefunden!';
       break;
     end;
 
@@ -186,6 +196,8 @@ begin
           { } '--margin-bottom 9px ' +
           { } '--margin-left 9px ' +
           { } '--margin-right 9px ' +
+        //  --page-size A4
+          { } '--encoding utf8 ' + //Umlaute
           { } '--dpi 150 ' +
           { } '--zoom '+iPDFZoom+' ' +
           { } '"' + Dokument + '"' + ' ' +
@@ -202,7 +214,7 @@ begin
 
     if (FSize(Dokument_pdf)<739) then
     begin
-      ErrorMsg := 'PDF-Erstellung ist nicht erfolgt. Ev. keine wkhtmltopdf Installation gefunden!';
+      ErrorMsg := 'PDF-Erstellung ist nicht erfolgt. Eventuell keine Installation gefunden!';
       break;
     end;
 
