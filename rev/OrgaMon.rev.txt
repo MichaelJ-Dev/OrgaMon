@@ -20,6 +20,15 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/"><font color="blue">Weblink: Onlinedokumentation "OrgaMon"</font></a href>
 
+Rev 8.768 (05.03.2026) Michael Jelinski
+  Fix:    Erhöhung Anzahl Elemente in SQL IN Statement für FB30 (von 999 auf 9999)
+  Info:   Diverse Refactorings
+  Neu:    Unter Personen steht unter 'Internet-Dienste' nun auch das Feld Email2 zur Verfügung. 
+  Neu:    Ansteuerung Tool zur PDF-Umwandlung aus html
+  Neu:    PDF-Dokument wird korrekt mit Umlauten erstellt (UTF-8) und im Format DinA4
+  Neu:    Erweiterung Email-Versand. Wenn Email_2 vorhanden ist, wird es verwendet ansonsten das Feld Email.
+  Neu:    Daten aus Beleg können nun in der Rechnungavorlage Email verwendet werden.
+
 Rev 8.767 (25.04.2025) Michael Jelinski
   Neu: Erweiterung des Übersetzers um eine Filterfunktion (Entfernen von - Zeichen aus einem Feld)    
 
