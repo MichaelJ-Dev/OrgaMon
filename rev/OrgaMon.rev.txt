@@ -20,6 +20,9 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/"><font color="blue">Weblink: Onlinedokumentation "OrgaMon"</font></a href>
 
+Rev 8.769 (29.03.2026) Michael Jelinski
+  Fix: PDF-Erstellung aus Belegsuche/Buchen
+
 Rev 8.768 (05.03.2026) Michael Jelinski
   Fix:    Erhöhung Anzahl Elemente in SQL IN Statement für FB30 (von 999 auf 9999)
   Info:   Diverse Refactorings

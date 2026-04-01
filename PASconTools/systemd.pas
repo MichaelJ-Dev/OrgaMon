@@ -197,7 +197,7 @@ begin
           { } '--margin-left 9px ' +
           { } '--margin-right 9px ' +
         //  --page-size A4
-          { } '--encoding utf8 ' + //Umlaute
+   //       { } '--encoding utf8 ' + //Umlaute
           { } '--dpi 150 ' +
           { } '--zoom '+iPDFZoom+' ' +
           { } '"' + Dokument + '"' + ' ' +
@@ -206,6 +206,7 @@ begin
       else
         CallExternalApp(
           { } '"' + wkhtmltopdf_Installation + '"' + ' ' +
+  //        { } '--encoding utf8 ' + //Umlaute
           { } iPDFZoom + ' ' +
           { } '"' + Dokument + '"' + ' ' +
           { } '"' + Dokument_pdf + '"',

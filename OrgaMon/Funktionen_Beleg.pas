@@ -51,6 +51,7 @@ uses
 {$ENDIF}
   anfix, gplists, c7zip,
   globals,
+  systemd,
   dbOrgaMon;
 
 type
@@ -7108,6 +7109,9 @@ var
   INTERN_INFO: TStringList;
   GENERATION_POSTFIX: string;
 
+  ErrorMsg: string;
+  PDF: TStringList;
+
   function NoSemi(s: string): string;
   begin
     result := s;
@@ -7170,6 +7174,7 @@ begin
 
     // mehrere Ausgabebelege / Ausprägungsarten "#M" / "#W"
     for n := 1 to pred(AusgabeBelege.count) do
+    begin
       FileCopy(
        {} AusgabeBelege[n],
        {} OutPath + OutFName +
@@ -7177,6 +7182,19 @@ begin
        {} ExtractSegmentBetween(
        {}   ExtractFileName(AusgabeBelege[n]),'#', chtmlextension) +
        {} chtmlextension);
+
+       //pdf erstellen
+       if AusgabeBelege[n].Contains('#W.html') then
+       // Hier PDF erstellen
+       PDF := html2pdf(OutPath + OutFName +
+         {} '#' +
+         {} ExtractSegmentBetween(
+         {}   ExtractFileName(AusgabeBelege[n]),'#', chtmlextension) +
+         {} chtmlextension);
+       //ErrorMsg := PDF.values['ERROR'];
+       //if (ErrorMsg<>'') then
+       //break;
+     end;
 
     // In das Druck-Spool-Verzeichnis
     if (INTERN_INFO.values['Druckauftrag'] = cIni_Activate) then

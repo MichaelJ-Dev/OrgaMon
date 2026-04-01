@@ -1138,6 +1138,7 @@ var
   eMail_Parameter: TStringList;
   eMail_Baustein: TStringList;
   FName: string;
+  FNamePDF: string;
   VERSAND_R: Integer;
   PERSON_R: Integer;
   BELEG_R: Integer;
@@ -1194,7 +1195,12 @@ begin
           // Dateianlagen
           if (pos(ceMail_Anlage, eMail_Parameter[n]) = 1) then
           begin
+          // Hier Anhang/Anlage
             FName := cutblank(copy(eMail_Parameter[n], succ(pos(':', eMail_Parameter[n])), MaxInt));
+            FNamePDF := ChangeFileExt(cutblank(copy(eMail_Parameter[n], succ(pos(':', eMail_Parameter[n])), MaxInt)), '.pdf');
+            if FileExists(FNamePDF) then
+              FName := FNamePDF;
+
             if FileExists(FName) then
             begin
               Attachments.add(FName);
