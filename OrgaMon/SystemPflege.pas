@@ -173,6 +173,12 @@ type
     Button21: TButton;
     Button22: TButton;
     Button23: TButton;
+    BtnErzAblageCSV: TButton;
+    BtnBaustKorrekt: TButton;
+    btnBaustelleInfo: TButton;
+    memBSInfo: TMemo;
+    edtOldFTPHOST: TEdit;
+    edtNewFTPHOST: TEdit;
     procedure CheckBox8Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -201,6 +207,9 @@ type
     procedure Button21Click(Sender: TObject);
     procedure Button22Click(Sender: TObject);
     procedure Button23Click(Sender: TObject);
+    procedure BtnErzAblageCSVClick(Sender: TObject);
+    procedure BtnBaustKorrektClick(Sender: TObject);
+    procedure btnBaustelleInfoClick(Sender: TObject);
 
   private
     { Private-Deklarationen }
@@ -1119,5 +1128,172 @@ begin
     e_r_BasePlug_Strings.free;
   end;
 end;
+
+procedure TFormSystemPflege.btnBaustelleInfoClick(Sender: TObject);
+Const
+cTZ =';';
+var
+s:String;
+SL:TStringlist;
+ x:Integer;
+begin
+  memBSInfo.Clear;
+  SL := TStringlist.create;
+  try
+  IB_Query1.close;
+  IB_Query1.SQL.text := 'SELECT * FROM BAUSTELLE';
+  IB_Query1.Open;
+
+  IB_Query1.First;
+  memBSInfo.Lines.Add('Nummern-Prefix;Name;' +
+  cE_FTPHOST + cTZ +
+  cE_FTPUSER + cTZ +
+  cE_FTPPASSWORD + cTZ +
+  cE_FTPVerzeichnis + cTZ +
+
+  cE_FTPHOST + cE_Postfix_Foto + cTZ +
+  cE_FTPUSER + cE_Postfix_Foto + cTZ +
+  cE_FTPPASSWORD + cE_Postfix_Foto + cTZ +
+  cE_ZIPPASSWORD + cE_Postfix_Foto + cTZ +
+  cE_FTPVerzeichnis + cE_Postfix_Foto
+  );
+
+  for x := 0 to IB_Query1.RecordCount-1 do
+  begin
+    SL.Text := IB_Query1.FieldByName('EXPORT_EINSTELLUNGEN').asString;
+
+    s:= IB_Query1.FieldByName('NUMMERN_PREFIX').asString + cTZ;
+    s:= IB_Query1.FieldByName('NAME').asString + cTZ;
+    s:=s + sl.Values[cE_FTPHOST]  + cTZ;
+    s:=s + sl.Values[cE_FTPUSER]  + cTZ;
+    s:=s + sl.Values[cE_FTPPASSWORD] + cTZ;
+    s:=s + sl.Values[cE_ZIPPASSWORD] + cTZ;
+    s:=s + sl.Values[cE_FTPVerzeichnis] + cTZ;
+
+    s:=s + sl.Values[cE_FTPHOST + cE_Postfix_Foto] + cTZ;
+    s:=s + sl.Values[cE_FTPUSER + cE_Postfix_Foto]  + cTZ;
+    s:=s + sl.Values[cE_FTPPASSWORD + cE_Postfix_Foto] + cTZ;
+    s:=s + sl.Values[cE_ZIPPASSWORD + cE_Postfix_Foto] + cTZ;
+    s:=s + sl.Values[cE_FTPVerzeichnis + cE_Postfix_Foto];
+
+  memBSInfo.Lines.add(s);
+
+  IB_Query1.next;
+  end;
+  finally
+    SL.Free;
+  end;
+end;
+
+procedure TFormSystemPflege.BtnErzAblageCSVClick(Sender: TObject);
+Const
+cTZ =';';
+var
+SL,SLOut :TStringlist;
+x: Integer;
+s: String;
+begin
+  BeginHourGlass;
+  SL := TStringlist.create;
+  SLOut  := TStringlist.create;
+  try
+    SLOut.Add('Name;Web;Zip');
+
+  IB_Query1.close;
+  IB_Query1.SQL.text := 'SELECT * FROM BAUSTELLE';
+  IB_Query1.Open;
+
+  IB_Query1.First;
+  for x := 0 to IB_Query1.RecordCount-1 do
+  begin
+    SL.Text := IB_Query1.FieldByName('EXPORT_EINSTELLUNGEN').asString;
+    s := sl.Values[cE_FTPUSER] + cTZ +
+                    sl.Values[cE_FTPPASSWORD] + cTZ +
+                    sl.Values[cE_ZIPPASSWORD];
+
+    if ((length(sl.Values[cE_FTPUSER])>0) and (length(sl.Values[cE_FTPPASSWORD])>0) and (length(sl.Values[cE_ZIPPASSWORD])>0)) then
+      SLOut.Add(s)
+      else
+      SLOut.Add('FEHLER RID ' +  IB_Query1.FieldByName('RID').asString);
+
+     IB_Query1.next;
+  end;
+
+ SLOut.SaveToFile(iOlapPath + 'Ablagen.csv');
+
+ finally
+   Sl.Free;
+   SLOut.Free;
+   EndHourGlass;
+ end;
+
+ Showmessage('''Ablagen.csv'' wurde gespeichert in ' + iOlapPath);
+end;
+
+procedure TFormSystemPflege.BtnBaustKorrektClick(Sender: TObject);
+var
+SL :TStringlist;
+x,y: Integer;
+x1: Integer;
+cha: Integer;
+lRID: Integer;
+lOldFTPHOST:String;
+lNewFTPHOST:String;
+OldFTPHost2:String;
+begin
+  if doit('Wollen Sie Änderungen an der Tabelle ''Baustelle'' durchführen? '+ #13#10 + ' Achtung! Führen Sie diesen Schritt nur nur durch, wenn Sie wissen was Sie tun!') then
+  begin
+    BeginHourGlass;
+    SL := TStringlist.create;
+    cha :=0;
+    try
+    lOldFTPHOST:= edtOldFTPHOST.Text;
+    lNewFTPHOST:= edtNewFTPHOST.Text;
+
+    IB_Query1.close;
+    IB_Query1.SQL.text := 'SELECT * FROM BAUSTELLE';
+    IB_Query1.Open;
+
+    IB_Query1.First;
+    for x := 0 to IB_Query1.RecordCount-1 do
+    begin
+      lRID:= IB_Query1.FieldByName('RID').asInteger;
+      SL.Text := IB_Query1.FieldByName('EXPORT_EINSTELLUNGEN').asString;
+      for y:=0 to SL.Count-1 do
+      begin
+        OldFTPHost2:='';
+        x1:= pos(cE_FTPHOST + '=',SL[y]);
+        if x1>0 then
+        Begin
+          OldFTPHost2 := copy(SL[y], x1 + length(cE_FTPHOST)+1,length(SL[y]));
+          //OldFTPHost2:= SL[y].Split(['='])[1];
+
+          if ((lOldFTPHost=OldFTPHost2) ) then
+          begin
+            SL[y] := cE_FTPHOST + '=' + lNewFTPHOST;
+
+            IB_Query2.sql.text:='UPDATE BAUSTELLE SET EXPORT_EINSTELLUNGEN=:EXPORT_EINSTELLUNGEN WHERE RID=:RID;';
+            IB_Query2.ParamByName('EXPORT_EINSTELLUNGEN').AsString := SL.Text;
+            IB_Query2.ParamByName('RID').AsInteger := lRid;
+            IB_Query2.Execute;
+
+            inc(cha);
+          end;
+        end;
+      end;
+      IB_Query1.next;
+    end;
+
+    ShowMessage('Es wurden '  + cha.tostring + ' Änderungen durchgeführt! (FTPServer)');
+
+   finally
+     Sl.Free;
+     EndHourGlass;
+   end;
+
+
+ end;
+end;
+
 
 end.

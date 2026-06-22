@@ -3,7 +3,7 @@ object FormSystemPflege: TFormSystemPflege
   Top = 163
   Caption = 'Systempflege'
   ClientHeight = 516
-  ClientWidth = 651
+  ClientWidth = 1011
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object FormSystemPflege: TFormSystemPflege
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 651
+    Width = 1011
     Height = 516
     ActivePage = Datensparsamkeit
     Align = alClient
@@ -41,7 +41,7 @@ object FormSystemPflege: TFormSystemPflege
       object Label4: TLabel
         Left = 7
         Top = 24
-        Width = 264
+        Width = 265
         Height = 13
         Caption = '2) Versuch alle Prim'#228'ren Indizes zu aktivieren'
       end
@@ -62,14 +62,14 @@ object FormSystemPflege: TFormSystemPflege
       object Label7: TLabel
         Left = 7
         Top = 319
-        Width = 171
+        Width = 172
         Height = 13
         Caption = '4) "Dupilcate Value" Diagnose'
       end
       object Label8: TLabel
         Left = 7
         Top = 373
-        Width = 161
+        Width = 162
         Height = 13
         Caption = '5) GENERATOR '#220'berpr'#252'fung'
       end
@@ -269,7 +269,7 @@ object FormSystemPflege: TFormSystemPflege
       object SynMemo1: TSynMemo
         Left = 0
         Top = 72
-        Width = 643
+        Width = 1003
         Height = 416
         Align = alBottom
         Font.Charset = DEFAULT_CHARSET
@@ -307,7 +307,7 @@ object FormSystemPflege: TFormSystemPflege
       object IB_UtilityBar1: TIB_UtilityBar
         Left = 0
         Top = 0
-        Width = 643
+        Width = 1003
         Height = 25
         CustomGlyphsSupplied = []
         Flat = False
@@ -353,7 +353,7 @@ object FormSystemPflege: TFormSystemPflege
       object Label3: TLabel
         Left = 16
         Top = 24
-        Width = 170
+        Width = 171
         Height = 13
         Caption = '1) Transaktionstyp ausw'#228'hlen'
       end
@@ -367,7 +367,7 @@ object FormSystemPflege: TFormSystemPflege
       object Label14: TLabel
         Left = 16
         Top = 288
-        Width = 143
+        Width = 144
         Height = 13
         Caption = '3) Transaktion ausf'#252'hren'
       end
@@ -535,14 +535,14 @@ object FormSystemPflege: TFormSystemPflege
       object Label10: TLabel
         Left = 16
         Top = 23
-        Width = 68
+        Width = 69
         Height = 13
         Caption = 'Farbrechner'
       end
       object Label11: TLabel
         Left = 16
         Top = 48
-        Width = 90
+        Width = 92
         Height = 13
         Caption = 'HTML-Farbcode:'
       end
@@ -739,7 +739,7 @@ object FormSystemPflege: TFormSystemPflege
       object Memo1: TMemo
         Left = 0
         Top = 0
-        Width = 643
+        Width = 1003
         Height = 488
         Align = alClient
         ScrollBars = ssVertical
@@ -753,7 +753,7 @@ object FormSystemPflege: TFormSystemPflege
       object Label20: TLabel
         Left = 32
         Top = 4
-        Width = 112
+        Width = 113
         Height = 13
         Caption = '1) Testvorbereitung'
       end
@@ -907,12 +907,66 @@ object FormSystemPflege: TFormSystemPflege
     object Migration: TTabSheet
       Caption = 'Migration'
       ImageIndex = 10
+      ExplicitLeft = 8
+      ExplicitTop = 28
+      DesignSize = (
+        1003
+        488)
+      object BtnErzAblageCSV: TButton
+        Left = 16
+        Top = 47
+        Width = 169
+        Height = 25
+        Caption = 'Erzeuge Ablagen.csv'
+        TabOrder = 0
+        OnClick = BtnErzAblageCSVClick
+      end
+      object BtnBaustKorrekt: TButton
+        Left = 16
+        Top = 78
+        Width = 169
+        Height = 25
+        Caption = 'Baustelle Korrektur Server'
+        TabOrder = 1
+        OnClick = BtnBaustKorrektClick
+      end
+      object btnBaustelleInfo: TButton
+        Left = 16
+        Top = 16
+        Width = 169
+        Height = 25
+        Caption = 'Baustelle - Info'
+        TabOrder = 2
+        OnClick = btnBaustelleInfoClick
+      end
+      object memBSInfo: TMemo
+        Left = 432
+        Top = 16
+        Width = 561
+        Height = 409
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 3
+      end
+      object edtOldFTPHOST: TEdit
+        Left = 16
+        Top = 109
+        Width = 137
+        Height = 21
+        TabOrder = 4
+        Text = 'FTPHOST (Old)'
+      end
+      object edtNewFTPHOST: TEdit
+        Left = 159
+        Top = 109
+        Width = 151
+        Height = 21
+        TabOrder = 5
+        Text = 'FTPHOST (New)'
+      end
     end
     object Datensparsamkeit: TTabSheet
       Caption = 'Datensparsamkeit'
       ImageIndex = 11
-      ExplicitLeft = 8
-      ExplicitTop = 28
       object Button21: TButton
         Left = 40
         Top = 40
@@ -943,13 +997,11 @@ object FormSystemPflege: TFormSystemPflege
     end
   end
   object IB_Query1: TIB_Query
-    DatabaseName = '192.168.115.6:test.fdb'
     IB_Connection = DataModuleDatenbank.IB_Connection1
     Left = 56
     Top = 456
   end
   object IB_Query2: TIB_Query
-    DatabaseName = '192.168.115.6:test.fdb'
     IB_Connection = DataModuleDatenbank.IB_Connection1
     SQL.Strings = (
       'SELECT'
