@@ -390,7 +390,7 @@ begin
 
         for n := pred(EMAIL_R.count) downto 0 do
         begin
-          SendeEmail(EMAIL_R[n]);
+          SendeEmail(EMAIL_R[n]); //! Versenden EMail!!
 
           if NoTimer then
           begin
@@ -915,7 +915,7 @@ begin
             else
             begin
 
-              // im 1. Rang: aus "EMail"
+              // im 1. Rang: aus "EMAIL_2" wenn nicht vorhanden aus "EMail"
               Versand_An := noblank(e_r_sqls('select EMAIL_2 from PERSON where RID=' + inttostr(ZIEL_R)));
               if length(Versand_An)<=0 then
                 Versand_An := noblank(e_r_sqls('select EMAIL from PERSON where RID=' + inttostr(ZIEL_R)));
@@ -966,7 +966,7 @@ begin
 
             // ~Platzhalter~ durch echte Werte ersetzen
             if not(eMailReplace(EMAIL_R, sTextInhalt, sAttachments)) then
-              raise Exception.create('eMailReplace-Fehler');
+              raise Exception.create('eMailReplace-Fehler! Bitte prüfen Sie das Diagnose-Verzeichnis!');
 
             // die Nachricht hat in der ersten Zeile den Betreff (OrgaMon-Regel)
             Subject := sTextInhalt[0];
@@ -1785,9 +1785,8 @@ var
             eMailParameter.Clear;
 
             with eMailParameter do
-            begin
+            begin      // Mit Versand...
               values['PAKETID'] := FieldByName('PAKETID').AsString;
-
               add(ceMail_Baustein +
                 { } cPersonPath(FieldByName('AUFTRAGGEBER_R').AsInteger) +
                 { } inttostrN(FieldByName('BELEG_R').AsInteger, 10) + '-' +
@@ -1798,7 +1797,7 @@ var
                 { } cPersonPath(FieldByName('AUFTRAGGEBER_R').AsInteger) +
                 { } inttostrN(FieldByName('BELEG_R').AsInteger, 10) + '-' +
                 { } inttostrN(FieldByName('TEILLIEFERUNG').AsInteger, 2) + '#W' +
-                { } chtmlExtension);
+                { } cPDFExtension); //Pdf-Anhang
 
             end;
 
@@ -1807,7 +1806,7 @@ var
             begin
               if (sql.count = 0) then
                 sql.add('select * from EMAIL for update');
-              insert;
+              insert;  // Info: Hier wird Email erstellt bei Art=14!
               FieldByName('RID').AsInteger := cRID_AutoInc;
               FieldByName('PERSON_R').AsInteger := PERSON_R;
               FieldByName('EREIGNIS_R').AsInteger := EREIGNIS_R;

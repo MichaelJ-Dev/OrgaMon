@@ -20,6 +20,13 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/"><font color="blue">Weblink: Onlinedokumentation "OrgaMon"</font></a href>
 
+
+Rev 8.770 (26.06.2026) Michael Jelinski
+  Neu: AuftragMobil - Erweiterung der Fehlermeldung bei fehlerhafter Anmeldung auf FTP-Server
+  Neu: Erweiterung Systempflege-Funktionen - Migration Baustelle-Info / Erzeuge Ablagen.csv / Baustelle Korrektur Server
+  Neu: Email-PDF-Anhang wird nun auch bei Beleg mit PaketID/Ohne PaketID erstellt.
+  Info: Erweiterung Fehlermeldung eMailReplace-Fehler
+
 Rev 8.769 (29.03.2026) Michael Jelinski
   Fix: PDF-Erstellung aus Belegsuche/Buchen
 
