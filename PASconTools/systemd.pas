@@ -190,16 +190,17 @@ begin
           { } '"' + wkhtmltopdf_Installation + '"' + ' ' +
           { } '--quiet ' +
           { } '--print-media-type ' +
-          { } '--page-width 2480px ' + // DIN A4 Format
-          { } '--page-height 3508px ' +
-          { } '--margin-top 100px ' +
-          { } '--margin-bottom 9px ' +
+     //   { } '--page-width 2480px ' + // DIN A4 Format
+     //   { } '--page-height 3508px ' +
+     //   { } '--margin-top 100px ' +
+     //   { } '--margin-bottom 9px ' +
           { } '--margin-left 9px ' +
           { } '--margin-right 9px ' +
-        //  --page-size A4
-   //       { } '--encoding utf8 ' + //Umlaute
+     //   {  } '--orientation Portrait ' +
+              '--page-size A4 ' +
+     //   { } '--encoding utf8 ' + //Umlaute
           { } '--dpi 150 ' +
-          { } '--zoom '+iPDFZoom+' ' +
+     //   { } '--zoom '+iPDFZoom+' ' +
           { } '"' + Dokument + '"' + ' ' +
           { } '"' + Dokument_pdf + '"',
           { } SW_HIDE)

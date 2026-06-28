@@ -20,6 +20,8 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/"><font color="blue">Weblink: Onlinedokumentation "OrgaMon"</font></a href>
 
+Rev 8.771 (27.06.2026) Michael Jelinski
+  Fix: Anpassung der PDF-Parameter auf DinA4-Format
 
 Rev 8.770 (26.06.2026) Michael Jelinski
   Neu: AuftragMobil - Erweiterung der Fehlermeldung bei fehlerhafter Anmeldung auf FTP-Server
