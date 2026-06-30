@@ -194,8 +194,8 @@ begin
      //   { } '--page-height 3508px ' +
      //   { } '--margin-top 100px ' +
      //   { } '--margin-bottom 9px ' +
-          { } '--margin-left 9px ' +
-          { } '--margin-right 9px ' +
+     //     { } '--margin-left 9px ' +
+     //     { } '--margin-right 9px ' +
      //   {  } '--orientation Portrait ' +
               '--page-size A4 ' +
      //   { } '--encoding utf8 ' + //Umlaute
