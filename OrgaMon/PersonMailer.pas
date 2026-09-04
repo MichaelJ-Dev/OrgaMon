@@ -606,6 +606,8 @@ var
   Versand_CC: string;
   Versand_Bcc: string;
 
+  Email2: String;
+
   procedure addSecurity;
   var
     SSLHandler: TIdSSLIOHandlerSocketOpenSSL;
@@ -915,12 +917,15 @@ begin
             else
             begin
 
-              // im 1. Rang: aus "EMAIL_2" wenn nicht vorhanden aus "EMail"
-              Versand_An := noblank(e_r_sqls('select EMAIL_2 from PERSON where RID=' + inttostr(ZIEL_R)));
-              if length(Versand_An)<=0 then
-                Versand_An := noblank(e_r_sqls('select EMAIL from PERSON where RID=' + inttostr(ZIEL_R)));
+              // im 1. Rang: aus "EMAIL" wenn nicht vorhanden aus "EMail"
+              Versand_An := noblank(e_r_sqls('select EMAIL from PERSON where RID=' + inttostr(ZIEL_R)));
 
-              // im 2. Rang: aus "USER-ID"
+              // im 2. Rang: aus "Email_2"
+              Email2 := noblank(e_r_sqls('select EMAIL_2 from PERSON where RID=' + inttostr(ZIEL_R)));
+              if length(noblank(Email2))>0 then
+                Versand_An := Email2;
+
+              // im 3. Rang: aus "USER-ID"
               if (Versand_An = '') then
                 Versand_An := noblank(e_r_sqls('select USER_ID from PERSON where RID=' + inttostr(ZIEL_R)));
 

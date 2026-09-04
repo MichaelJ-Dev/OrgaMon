@@ -20,6 +20,9 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/"><font color="blue">Weblink: Onlinedokumentation "OrgaMon"</font></a href>
 
+Rev 8.772 (04.09.2026) Michael Jelinski
+  Fix: eMail - Nur wenn Email2 vorhanden ist, wird es verwendet. Die Rangkette ist nun EMAIL, EMAIL_2, USER-ID
+
 Rev 8.771 (27.06.2026) Michael Jelinski
   Fix: Anpassung der PDF-Parameter auf DinA4-Format
 
