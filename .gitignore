@@ -71,3 +71,9 @@ lib
 /FirebirdRestore/*.dcu
 /FirebirdRestore/*.exe
 /Oc/*.exe
+/OrgaMon-App/OrgaMon-App/gradle.properties
+/OrgaMon-App/OrgaMon-App/gradle/wrapper/gradle-wrapper.jar
+/OrgaMon-App/OrgaMon-App/gradle/wrapper/gradle-wrapper.properties
+/OrgaMon-App/OrgaMon-App/gradlew
+/OrgaMon-App/OrgaMon-App/gradlew.bat
+/OrgaMon-App/OrgaMon-App/settings.gradle

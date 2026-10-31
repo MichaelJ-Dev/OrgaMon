@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="50"
-    android:versionName="2.050">
+    android:versionCode="51"
+    android:versionName="2.053">
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
@@ -59,7 +59,7 @@
         </provider>
 
         <service
-            android:name=".orgaMonUploader"
+            android:name=".OrgaMonUploader"
             android:exported="false"
             android:label="Foto Upload"/>
     </application>

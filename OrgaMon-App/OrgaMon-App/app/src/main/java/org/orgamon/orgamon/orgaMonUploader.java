@@ -59,7 +59,8 @@ import static org.orgamon.orgamon.R.*;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class orgaMonUploader extends Service {
+
+public class OrgaMonUploader extends Service {
 
     static final String TAG = "Uploader";
     static final String ALREADY_UPLOADED_PREFIX = "u";
@@ -89,8 +90,8 @@ public class orgaMonUploader extends Service {
         Log.d(TAG, "onCreate");
         uploader = new Uploader();
         soundPool =  new SoundPool.Builder()
-                    .setMaxStreams(1)
-                    .build();
+                .setMaxStreams(1)
+                .build();
         soundBeep = soundPool.load(getApplicationContext(), raw.beep48, 1);
         soundFail = soundPool.load(getApplicationContext(), raw.fail48, 1);
         soundOk = soundPool.load(getApplicationContext(), raw.ok48, 1);
@@ -122,10 +123,17 @@ public class orgaMonUploader extends Service {
     class OrgaMonPicsFilter implements FileFilter {
 
         public boolean accept(File pathname) {
-            Log.d(TAG,pathname.getName()+" is Pics-filtered");
-            if (pathname.isDirectory())
+            if (pathname.isDirectory()) {
+                Log.d(TAG,pathname.getName()+" is Pics-filtered");
                 return false;
-            return (pathname.getName().indexOf("-") == 3);
+            }
+            boolean b = (pathname.getName().indexOf("-") == 3);
+            if (b) {
+                Log.d(TAG,pathname.getName()+" passed Pics-Filter");
+            } else {
+                Log.d(TAG,pathname.getName()+" is Pics-filtered");
+            }
+            return (b);
         }
     }
 
@@ -133,15 +141,24 @@ public class orgaMonUploader extends Service {
 
         public boolean accept(File pathname) {
 
-            Log.d(TAG,pathname.getName()+" is Old-filtered");
-            if (pathname.isDirectory())
+            if (pathname.isDirectory()) {
+                Log.d(TAG,pathname.getName()+" is Old-filtered");
                 return false;
+            }
 
-            if (!pathname.getName().startsWith(ALREADY_UPLOADED_PREFIX))
+            if (!pathname.getName().startsWith(ALREADY_UPLOADED_PREFIX)) {
+                Log.d(TAG,pathname.getName()+" is Old-filtered");
                 return false;
+            }
 
-            return (pathname.lastModified() + DELETE_OLDER_THAN < System
+            boolean b = (pathname.lastModified() + DELETE_OLDER_THAN < System
                     .currentTimeMillis());
+            if (b) {
+                Log.d(TAG,pathname.getName()+" passed Old-filtered");
+            } else {
+                Log.d(TAG,pathname.getName()+" is Old-filtered");
+            }
+            return (b);
         }
     }
 
@@ -413,17 +430,18 @@ public class orgaMonUploader extends Service {
                         Log.i(TAG, "do job '" + lFile + "'");
                         try {
 
-                            // Fall Back to the Web-Host
-                            if (amCreateActivity.iHost_FTP.length()==0) {
-                                amCreateActivity.iHost_FTP = amCreateActivity.fullHost();
+                            // Fall Back to the Web-Host (inkl. alternativer TLD)
+                            String ftpHost = amCreateActivity.iHost_FTP;
+                            if (ftpHost.length()==0) {
+                                ftpHost = amCreateActivity.fullHost();
                             }
 
                             if (useSecure) {
-                                Log.i(TAG, "connect FTPS:" + amCreateActivity.iHost_FTP + " ...");
+                                Log.i(TAG, "connect FTPS:" + ftpHost + " ...");
                             } else {
-                                Log.i(TAG, "connect FTP:" + amCreateActivity.iHost_FTP + " ...");
+                                Log.i(TAG, "connect FTP:" + ftpHost + " ...");
                             }
-                            ftpClient.connect(amCreateActivity.iHost_FTP);
+                            ftpClient.connect(ftpHost);
                             if (!FTPReply.isPositiveCompletion(ftpClient
                                     .getReplyCode())) {
 
@@ -437,8 +455,8 @@ public class orgaMonUploader extends Service {
                             boolean result;
 
                             result = ftpClient.login(
-                                     amCreateActivity.iHost,
-                                     amCreateActivity.iPwd);
+                                    amCreateActivity.iHost,
+                                    amCreateActivity.iPwd);
 
                             if (!result) {
 
@@ -566,7 +584,7 @@ public class orgaMonUploader extends Service {
                                             Log.e(TAG, "440: Files.move ", e);
                                             nextSleepLength = cSLEEP_AFTER_EXCEPTION;
                                             break;
-                                       }
+                                        }
                                     }
 
 
@@ -655,9 +673,9 @@ public class orgaMonUploader extends Service {
                     // Clean up and Sleep
                     try {
                         if (ftpClient!=null) {
-                          if (ftpClient.isConnected()) {
-                              ftpClient.disconnect();
-                        }}
+                            if (ftpClient.isConnected()) {
+                                ftpClient.disconnect();
+                            }}
                     } catch (IOException e) {
                         // Quite normal, do nothing!
                         Log.e(TAG, "disconnect", e);

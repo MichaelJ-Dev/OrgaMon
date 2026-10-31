@@ -26,9 +26,12 @@
  */
 package org.orgamon.orgamon;
 
+import android.annotation.SuppressLint;
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -47,7 +50,6 @@ import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -72,8 +74,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Gallery;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -90,7 +90,6 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -101,7 +100,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.os.Environment.getExternalStoragePublicDirectory;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -111,13 +109,13 @@ public class amCreateActivity extends AppCompatActivity {
 
     // Anwendungsname
     static final String APP = "OrgaMon-App";
-    static final String VERSION = "2.050"; //
+    static final String VERSION = "2.053"; //
     static final String REV = "Rev. " + VERSION;
 
     // App-Namensraum + Programm-Parameter-ContainerName
     static final String cINI = "OrgaMon";
     //  FTPS + https: Host
-    static final String cTLD = "orgamon.net";
+    static final String  cTLD = "orgamon.net";
 
     // Serverkommunikation
     static final String cUP = "up.php?";
@@ -284,8 +282,11 @@ public class amCreateActivity extends AppCompatActivity {
 
     // normalerweise ist der FTPhost=Webhost
     // zu Testzwecken kann aber ein alternativer Host
-    // verwendet werden
+    // verwendet werden (Code 1007, nur FTP, wird nicht gespeichert)
     public static String iHost_FTP = "";
+
+    // alternative TLD statt cTLD (Code 1009), gilt für https und FTP(S)
+    public static String iTLD_alternat = "";
 
     // Wo liegen die Bilder
     static final String iFotoPath_DEFAULT = "/storage/emulated/0/Pictures";
@@ -337,10 +338,11 @@ public class amCreateActivity extends AppCompatActivity {
     LinearLayout viewSettings;
     EditText viewSettings_geraeteNo;
     EditText viewSettings_server;
+    TextView viewSettings_url;
 
     // Liste der Aufträge
-    ListView viewListe;
 
+    ListView viewListe;
     // Protokoll
     ScrollView viewProtokoll;
 
@@ -421,6 +423,7 @@ public class amCreateActivity extends AppCompatActivity {
             iBarcode = prefs.getString("Barcode", iBarcode_DEFAULT);
             iHost = prefs.getString("Host", iHost_DEFAULT);
             iFTPS = prefs.getString("FTPS", "true");
+            iTLD_alternat = prefs.getString("HostFTP", "");
             iFotoPath = prefs.getString("Fotos", iFotoPath_DEFAULT);
             iFotoConfirm = prefs.getString("Nachfrage", "true");
             iFocus = prefs.getString("Fokus", iFocus_DEFAULT);
@@ -457,6 +460,7 @@ public class amCreateActivity extends AppCompatActivity {
             editor.putString("Barcode", iBarcode);
             editor.putString("Host", iHost);
             editor.putString("FTPS", iFTPS);
+            editor.putString("HostFTP", iTLD_alternat);
             editor.putString("Fotos", iFotoPath);
             editor.putString("Nachfrage", iFotoConfirm);
             editor.putString("Fokus", iFocus);
@@ -470,8 +474,8 @@ public class amCreateActivity extends AppCompatActivity {
     }
 
     public void wipePref(String prefName) {
-
         Log.i(TAG, "wipePref" + prefName);
+
         try {
             SharedPreferences prefs = this.getSharedPreferences(prefName,
                     Context.MODE_PRIVATE);
@@ -1259,14 +1263,18 @@ public class amCreateActivity extends AppCompatActivity {
 
     }
 
-    static public String fullHost() {
-        return iHost + "." + cTLD;
-    }
-
     static public String urlPrefix() {
         return "https://" + fullHost() + "/";
     }
 
+    static public String fullHost() {
+        // alternative TLD (Code 1009) ersetzt cTLD, gilt für https und FTP(S)
+        if (iTLD_alternat.length() > 0)
+            return iHost + "." + iTLD_alternat;
+        return iHost + "." + cTLD;
+    }
+
+    @SuppressLint("ResourceType")
     public void createEinstellungen() {
 
         setTitle(APP + " " + REV);
@@ -1329,9 +1337,9 @@ public class amCreateActivity extends AppCompatActivity {
         viewSettings_2.addView(viewSettings_server);
 
         viewSettings.addView(viewSettings_2);
+        viewSettings.setId(107);  //viewSettings_3.
 
         LinearLayout viewSettings_3 = new LinearLayout(this);
-        viewSettings_3.setId(107);
         viewSettings_3.setOrientation(LinearLayout.HORIZONTAL);
 
         Button viewSettings_3_b1 = new Button(this);
@@ -1355,6 +1363,7 @@ public class amCreateActivity extends AppCompatActivity {
                             // restore all the defaults!
                             iFotoPath = iFotoPath_DEFAULT;
                             iHost_FTP = "";
+                            iTLD_alternat = "";
                             iFTPS = "true";
                             iFotoConfirm = "true";
                             makeSense = true;
@@ -1404,6 +1413,11 @@ public class amCreateActivity extends AppCompatActivity {
                             makeSense = true;
                         }
 
+                        if (i.equals("1009")) {
+                            askUrl();
+                            makeSense = true;
+                        }
+
                         break;
                     case 9:
                         iPwd = i;
@@ -1432,7 +1446,50 @@ public class amCreateActivity extends AppCompatActivity {
         viewSettings_3.addView(viewSettings_3_b2);
 
         viewSettings.addView(viewSettings_3);
+
+        // aktueller Host
+        viewSettings_url = new TextView(this);
+        viewSettings_url.setId(110);
+        viewSettings_url.setText(urlInfo());
+        viewSettings.addView(viewSettings_url);
+
     }
+
+    // Anzeige des verwendeten Hosts (ohne Firma) in den Einstellungen
+    public String urlInfo() {
+        if (iTLD_alternat.length() > 0)
+            return "Host: " + iTLD_alternat;
+        return "Host: " + cTLD;
+    }
+
+    // Abfrage einer alternativen TLD (Code 1009), leer = Standard
+    public void askUrl() {
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
+        input.setHint(cTLD);
+        input.setText(iTLD_alternat);
+        new AlertDialog.Builder(this)
+                .setTitle("Alternativer Host")
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // nur die TLD: ohne Schema, ohne "/" und ohne vorangestelltes iHost
+                        String h = input.getText().toString().trim();
+                        h = h.replaceFirst("^[A-Za-z]+://", "");
+                        int k = h.indexOf('/');
+                        if (k >= 0)
+                            h = h.substring(0, k);
+                        if (h.startsWith(iHost + "."))
+                            h = h.substring(iHost.length() + 1);
+                        iTLD_alternat = h;
+                        viewSettings_url.setText(urlInfo());
+                        saveSettings();
+                    }
+                })
+                .setNegativeButton("Abbruch", null)
+                .show();
+    }
+
 
     public String prev(String path) {
 
@@ -2422,7 +2479,7 @@ public class amCreateActivity extends AppCompatActivity {
 
         Log.d(APP, REV);
         super.onCreate(savedInstanceState);
-        uploaderThread = new Intent(this, orgaMonUploader.class);
+        uploaderThread = new Intent(this, OrgaMonUploader.class);
 
 
         inflater = (LayoutInflater) this
