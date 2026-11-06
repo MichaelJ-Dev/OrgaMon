@@ -23,6 +23,16 @@ Dokumentation
 
 @<a href="https://wiki.orgamon.org/index.php/OrgaMon-App"><font color="blue">Weblink: Onlinedokumentation "OrgaMon-App"</font></a href>
 
+
+Rev 2.053 (31.10.2026) Michael Jelinski 
+ Neu: Neuer Code 1009 for Alt. Host + Warnings removed
+
+Rev 2.052 (24.04.2026) Michael Jelinski
+  Info: Test Compilation 
+
+Rev 2.051 (01.11.2024) Michael Jelinski
+  Info: Test Compilation  
+
 Rev 2.050 (03.04.2023) Andreas Filsinger
 
  Neu: Protokoll: Haken: J;N ist nun frei änderbar
